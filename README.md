@@ -2,7 +2,7 @@
 
 Reproducibility repository for the conference paper **Detection and Short-Term Prediction of Solar Flares Using a Causal Wavelet-Energy Feature**.
 
-The reference model was evaluated on January-December 2022 and then frozen and applied without retuning to January-December 2023 for temporal out-of-sample validation.
+The reference configuration is evaluated on January-December 2022 and then frozen and applied without parameter retuning to January-December 2023.
 
 ## Main results
 
@@ -15,25 +15,37 @@ The reference model was evaluated on January-December 2022 and then frozen and a
 
 The pre-defined T=12 h mitigation reduced 2022 Prediction false positives from 2205 to 1968 (10.7%). Applied unchanged in 2023, it reduced false positives from 1855 to 1703 (8.2%), with a small recall/F1 tradeoff.
 
+## Important comparability note
+
+The alert-generation parameters are frozen for the 2023 temporal out-of-sample test, but the two years use different NOAA flare-reference products for scoring:
+
+- **2022:** NOAA/SWPC daily Solar Event Reports (XRA entries).
+- **2023:** NOAA/NCEI GOES XRS Level-2 science flare report.
+
+Accordingly, differences between 2022 and 2023 metrics can reflect both solar-activity differences and catalog construction. The higher 2023 precision is not interpreted as an improvement caused solely by temporal generalization. See [docs/DATA_SOURCES.md](docs/DATA_SOURCES.md).
+
 ## Repository structure
 
-- `code/` - preserved analysis/verification scripts.
-- `data/` - data provenance and coverage summaries.
-- `results/2022/` - main metrics, ablation, false-positive analysis, and mitigation.
-- `results/2023/` - frozen out-of-sample metrics and verification outputs.
-- `docs/` - configuration and reproduction instructions.
+- `code/` — input preparation, 2022 analysis/ablation, 2023 alert generation, and metric verification.
+- `data/reference/` — committed flare-reference catalogs used for audit/scoring.
+- `data/coverage/` — GOES coverage summaries.
+- `data/raw/` — local location for large public GOES inputs (not committed).
+- `results/2022/` — main metrics, monthly outputs, ablation, false-positive analysis, and mitigation.
+- `results/2023/` — saved frozen-alert outputs and out-of-sample metrics.
+- `docs/` — configuration, provenance, and reproduction instructions.
 
 ## Reference configuration
 
-- GOES XRS 1-8 Å flux, 1-min cadence
+- GOES-16 XRS 1-8 Å flux, 1-min cadence
 - db2 wavelet, level 3
+- PyWavelets `symmetric` boundary extension inside each right-aligned 30-min window
 - 30-min right-aligned feature window
 - 2-min decision cadence
 - 6-h trailing percentile history
 - Prediction percentile 0.80
 - Detection percentile 0.95
 - 120-min monthly warm-up
-- 4-min persistence
+- 4-min persistence span
 - merge gap <= 12 min
 - Prediction match: 10-90 min before NOAA peak
 - Detection match: +/-10 min around NOAA peak
@@ -42,25 +54,39 @@ The pre-defined T=12 h mitigation reduced 2022 Prediction false positives from 2
 
 The mitigation changes only the trailing history from T=6 h to T=12 h.
 
-## Reproduction
+## Quick reproduction
+
+Python 3.12+ is recommended.
 
 ```bash
 pip install -r requirements.txt
+python code/prepare_goes_inputs.py
+python code/run_2022_full_analysis.py
+python code/run_2022_ablation.py
+python code/run_2023_alerts.py
+python code/verify_2023_metrics.py
 ```
 
-Then follow [docs/RUN_ORDER.md](docs/RUN_ORDER.md).
+See [docs/RUN_ORDER.md](docs/RUN_ORDER.md) for details.
 
 ## Data availability
 
-The large raw GOES scientific files are not duplicated in the normal Git repository. Their exact filenames, provenance, expected paths, and coverage summaries are documented under `data/` and `docs/DATA_SOURCES.md`.
+Large GOES NetCDF inputs are public NOAA/NCEI files and are intentionally not duplicated in Git. `code/prepare_goes_inputs.py` downloads them from the official archive and builds the compact 2022 ZIP expected by the preserved analysis code.
 
-The complete project archive preserves the raw inputs as well as the derived alert-event files. The repository keeps the compact reproducibility materials and reported result tables suitable for conference review.
+The small flare-reference catalogs, 2022 monthly metrics, 2022/2023 coverage summaries, and 2023 alert-event files needed to audit the reported scoring are committed directly in this repository.
 
-## Reproducibility note
+## Reproducibility notes
 
-The preserved 2022 full-year raw-to-results analysis is in `code/run_2022_full_analysis.py`. The 2023 scoring check is in `code/verify_2023_metrics.py`, which recomputes TP/FP/FN, precision, recall, F1, and timing from the saved alert events and official NOAA flare report.
+- `code/run_2022_full_analysis.py` reproduces the full 2022 wavelet and baseline analysis.
+- `code/run_2022_ablation.py` reproduces the one-factor-at-a-time wavelet sensitivity table.
+- `code/run_2023_alerts.py` regenerates the frozen T=6 h and pre-defined T=12 h 2023 alert files from the raw GOES-16 NetCDF without using flare labels.
+- `code/verify_2023_metrics.py` scores those alerts against the committed 2023 flare report.
 
-The exact standalone 2023 raw-NetCDF-to-alert wrapper and a separate full-year ablation batch wrapper were not preserved as independent source files in the available workspace. This repository therefore does not claim those wrappers as archived source code; the fixed configuration and derived outputs are documented transparently.
+Each calendar month is processed independently. Therefore, an alert near a month boundary is evaluated within that month's scoring window and is not matched across calendar-month boundaries.
+
+## License
+
+Code is released under the MIT License. NOAA source data retain their original public-data terms and provenance.
 
 ## Citation
 
