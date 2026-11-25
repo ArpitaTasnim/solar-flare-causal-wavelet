@@ -73,9 +73,9 @@ See [docs/RUN_ORDER.md](docs/RUN_ORDER.md) for details.
 
 ## Data availability
 
-Large GOES NetCDF inputs are public NOAA/NCEI files and are intentionally not duplicated in Git. `code/prepare_goes_inputs.py` downloads the checksum-pinned original 2022 ZIP, 2023 NetCDF, and 2023 flare-reference CSV from the [dataset release](https://github.com/ArpitaTasnim/solar-flare-causal-wavelet/releases/tag/data-v1.0). The [successful automated run](https://github.com/ArpitaTasnim/solar-flare-causal-wavelet/actions/runs/45686421097) regenerated the 2022 analysis and 2023 alerts, passed the expected paper totals and final reproducibility checker, and committed the rebuilt artifacts.
+Large GOES NetCDF inputs are public NOAA/NCEI files and are intentionally not duplicated in Git. `code/prepare_goes_inputs.py` downloads the checksum-pinned original 2022 ZIP, 2023 NetCDF, and 2023 flare-reference CSV from the [dataset release](https://github.com/ArpitaTasnim/solar-flare-causal-wavelet/releases/tag/data-v1.0). The [successful automated run](https://github.com/ArpitaTasnim/solar-flare-causal-wavelet/actions/runs/45686421097) regenerated the 2022 analysis and 2023 alerts, verified the reported paper totals and final reproducibility checks, and committed the reference catalogs, coverage summaries and alert files.
 
-The compact paper-result tables and 2022 monthly metrics are committed. The NOAA reference catalogs, coverage summaries, and full 2023 alert-event files are committed and can be regenerated or downloaded by the reproducibility commands so reviewers do not depend on copied spreadsheet previews.
+The compact paper-result tables and 2022 monthly metrics are committed. The NOAA reference catalogs, coverage summaries, and full 2023 alert-event files are committed and can be regenerated or downloaded by the reproducibility commands for independent verification.
 
 ## Reproducibility notes
 
