@@ -58,7 +58,7 @@ The complete project archive preserves the raw inputs as well as the derived ale
 
 ## Reproducibility note
 
-The 2023 scoring script in `code/reproduce_2023_metrics_from_saved_alerts.py` independently recomputes TP/FP/FN, precision, recall, F1, and timing from the saved alert events and official NOAA flare report.
+The preserved 2022 full-year raw-to-results analysis is in `code/run_2022_full_analysis.py`. The 2023 scoring check is in `code/verify_2023_metrics.py`, which recomputes TP/FP/FN, precision, recall, F1, and timing from the saved alert events and official NOAA flare report.
 
 The exact standalone 2023 raw-NetCDF-to-alert wrapper and a separate full-year ablation batch wrapper were not preserved as independent source files in the available workspace. This repository therefore does not claim those wrappers as archived source code; the fixed configuration and derived outputs are documented transparently.
 
