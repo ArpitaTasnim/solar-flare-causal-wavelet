@@ -1,0 +1,3 @@
+Setting,Alerts,TP,FP,FN,Precision,Recall,F1,False-alarm fraction,Median lead (min),FP reduction vs reference,FP reduction (%),False-alarm fraction reduction (percentage points)
+Reference (T = 6 h),3117,912,2205,1393,0.2925890279114533,0.3956616052060737,0.3364072298045001,0.7074109720885466,45.0,0,0.0,0.0
+FP-mitigation test (T = 12 h),2889,921,1968,1384,0.3187954309449636,0.3995661605206074,0.3546399691952253,0.6812045690550363,44.0,237,10.748299319727892,2.6206403033510295
