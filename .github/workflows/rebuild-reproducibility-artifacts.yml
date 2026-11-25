@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/rebuild-reproducibility-artifacts.yml"
+      - "code/**"
+      - "requirements.txt"
   workflow_dispatch:
 
 permissions:
@@ -81,6 +83,9 @@ jobs:
 
           print("Validated clean artifact counts.")
           PY
+
+      - name: Run final reproducibility checker
+        run: python code/check_reproducibility.py
 
       - name: Commit clean reproducibility artifacts
         run: |
