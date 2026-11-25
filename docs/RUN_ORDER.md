@@ -33,7 +33,7 @@ Compare against committed paper-result files such as:
 - `results/2022/False_positive_compact_paper_table_2022.csv`
 - `results/2022/Prediction_FP_mitigation_T6_vs_T12_2022.csv`
 
-The 2022 runner downloads/parses the NOAA/SWPC daily Solar Event Reports. The parsed C/M/X reference catalog used for audit is also committed at `data/reference/2022/NOAA_CMX_reference_2022.csv`.
+The 2022 runner downloads/parses the NOAA/SWPC daily Solar Event Reports and writes the parsed C/M/X reference catalog to `data/reference/2022/NOAA_CMX_reference_2022.csv`. It can also be generated separately with `python code/prepare_2022_reference.py`.
 
 ## 4. Re-run the 2022 sensitivity / ablation analysis
 
