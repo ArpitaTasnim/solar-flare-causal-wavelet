@@ -71,7 +71,7 @@ See [docs/RUN_ORDER.md](docs/RUN_ORDER.md) for details.
 
 ## Data availability
 
-Large GOES NetCDF inputs are public NOAA/NCEI files and are intentionally not duplicated in Git. `code/prepare_goes_inputs.py` downloads them from the official archive and builds the compact 2022 ZIP expected by the preserved analysis code.
+Large GOES NetCDF inputs are public NOAA/NCEI files and are intentionally not duplicated in Git. `code/prepare_goes_inputs.py` downloads the 2023 NOAA input and the checksum-pinned original 2022 ZIP from the [dataset release](https://github.com/ArpitaTasnim/solar-flare-causal-wavelet/releases/tag/data-v1.0). Exact reproduction is pending validation.
 
 The compact paper-result tables and 2022 monthly metrics are committed. The NOAA reference catalogs, coverage summaries, and full 2023 alert-event files are generated or downloaded by the reproducibility commands so reviewers do not depend on copied spreadsheet previews.
 

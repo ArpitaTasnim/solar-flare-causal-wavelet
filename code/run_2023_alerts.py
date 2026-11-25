@@ -26,7 +26,7 @@ import run_2022_full_analysis as core
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_NETCDF = (
     REPO_ROOT / "data" / "raw" / "2023"
-    / "sci_xrsf-l2-avg1m_g16_y2023_v2-2-1.nc"
+    / "sci_xrsf-l2-avg1m_g16_y2023_v2-2-2.nc"
 )
 DEFAULT_OUTPUT = REPO_ROOT / "results" / "2023" / "out_of_sample"
 
