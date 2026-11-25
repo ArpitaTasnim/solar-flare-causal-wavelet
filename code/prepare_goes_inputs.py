@@ -28,8 +28,10 @@ FLRPT_BASE = (
 
 URL_2022 = "https://github.com/ArpitaTasnim/solar-flare-causal-wavelet/releases/download/data-v1.0/GOES_2022_FULL.zip"
 SHA256_2022 = "67b63eae17245227ccc51b77612c496384b76fda4954eede9c89abb1bf62242e"
-URL_2023 = AVG1M_BASE + "/sci_xrsf-l2-avg1m_g16_y2023_v2-2-2.nc"
-URL_2023_FLRPT = FLRPT_BASE + "/sci_xrsf-l2-flrpt_geo_y2023_v1-0-1.csv"
+URL_2023 = "https://github.com/ArpitaTasnim/solar-flare-causal-wavelet/releases/download/data-v1.0/sci_xrsf-l2-avg1m_g16_y2023_v2-2-1.nc"
+SHA256_2023 = "c25cde23fe3ecb1b6185ec823126cd0d68893461216d3f2ca687e1c08034af31"
+URL_2023_FLRPT = "https://github.com/ArpitaTasnim/solar-flare-causal-wavelet/releases/download/data-v1.0/sci_xrsf-l2-flrpt_geo_y2023_v1-0-1.csv"
+SHA256_2023_FLRPT = "23902fe462a5eafc500ea15d897d59e57480526d83dda448b9047ead4a89dbe5"
 
 
 def download(url: str, target: Path):
@@ -134,7 +136,7 @@ def main():
     )
     args = ap.parse_args()
 
-    nc2023 = RAW_2023 / "sci_xrsf-l2-avg1m_g16_y2023_v2-2-2.nc"
+    nc2023 = RAW_2023 / "sci_xrsf-l2-avg1m_g16_y2023_v2-2-1.nc"
     flare2023 = REF_2023 / "sci_xrsf-l2-flrpt_geo_y2023_v1-0-1.csv"
 
     if not args.only_2023:
@@ -148,6 +150,11 @@ def main():
 
     download(URL_2023, nc2023)
     download(URL_2023_FLRPT, flare2023)
+    for path, expected in [(nc2023, SHA256_2023), (flare2023, SHA256_2023_FLRPT)]:
+        with path.open("rb") as f:
+            actual = hashlib.file_digest(f, "sha256").hexdigest()
+        if actual != expected:
+            raise ValueError(f"Original 2023 input checksum mismatch: {path}: {actual}")
     write_2023_coverage(nc2023)
 
 

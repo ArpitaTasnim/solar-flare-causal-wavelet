@@ -11,7 +11,7 @@ https://data.ngdc.noaa.gov/platforms/solar-space-observing-satellites/goes/goes1
 Files used by the reproducibility workflow:
 
 - 2022: original `GOES_2022_FULL.zip`, preserved as a [release asset](https://github.com/ArpitaTasnim/solar-flare-causal-wavelet/releases/tag/data-v1.0). SHA-256: `67b63eae17245227ccc51b77612c496384b76fda4954eede9c89abb1bf62242e`.
-- 2023: `sci_xrsf-l2-avg1m_g16_y2023_v2-2-2.nc`
+- 2023: original `sci_xrsf-l2-avg1m_g16_y2023_v2-2-1.nc`, preserved in the same release. SHA-256: `c25cde23fe3ecb1b6185ec823126cd0d68893461216d3f2ca687e1c08034af31`.
 
 The original 2022 working archive `GOES_2022_FULL.zip` was a flattened CSV representation. The analysis only reads `time`, `quad_diode`, `xrsb_flux`, and `xrsb_flag`, then retains `quad_diode == 0`. `code/prepare_goes_inputs.py` downloads and checksum-verifies the original archive instead of recreating it from a revised NOAA product. Exact reproduction is pending validation.
 
@@ -33,7 +33,7 @@ Official NOAA/NCEI directory:
 
 https://data.ngdc.noaa.gov/platforms/solar-space-observing-satellites/goes/multi/l2/data/xrsf-l2-flrpt_science/csv/
 
-The exact CSV used for scoring is committed at:
+The original CSV is preserved in the release (SHA-256: `23902fe462a5eafc500ea15d897d59e57480526d83dda448b9047ead4a89dbe5`) and is downloaded and checksum-verified at:
 
 `data/reference/2023/sci_xrsf-l2-flrpt_geo_y2023_v1-0-1.csv`
 
@@ -66,4 +66,4 @@ The large GOES NetCDF files are not committed to Git. Run:
 python code/prepare_goes_inputs.py
 ```
 
-to download the public NOAA/NCEI inputs into the expected repository paths.
+to download the preserved original inputs into the expected repository paths.
