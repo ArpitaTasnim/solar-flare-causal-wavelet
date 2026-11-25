@@ -1,4 +1,4 @@
-# Documentation
+# Data provenance and methodology
 
 - `CONFIGURATION.md` — fixed reference parameters and mitigation setting.
 - `DATA_SOURCES.md` — provenance of the GOES and NOAA inputs.
