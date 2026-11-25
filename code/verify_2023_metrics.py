@@ -2,10 +2,9 @@
 """Recompute the 2023 out-of-sample metrics from saved alert-event files.
 
 This script verifies the reported 2023 TP/FP/FN, precision, recall, F1 and
-timing metrics using the saved wavelet alert events plus the NOAA 2023 flare
-report. It does not regenerate the wavelet alerts from the raw NetCDF file;
-that alert generation uses the same causal core configuration documented in
-the paper and in run_full_year_2022_wavelet_and_baselines.py.
+timing metrics using the frozen wavelet alert events plus the NOAA 2023 flare
+report. Alert files can be regenerated from the raw GOES-16 NetCDF with
+run_2023_alerts.py, which reuses the causal core in run_2022_full_analysis.py.
 """
 from pathlib import Path
 import argparse
