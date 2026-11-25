@@ -1,5 +1,7 @@
 # Causal Wavelet-Energy Solar Flare Detection and Prediction
 
+[![Reproducibility workflow](https://github.com/ArpitaTasnim/solar-flare-causal-wavelet/actions/workflows/rebuild-reproducibility-artifacts.yml/badge.svg)](https://github.com/ArpitaTasnim/solar-flare-causal-wavelet/actions/runs/45686421097)
+
 Reproducibility repository for the conference paper **Detection and Short-Term Prediction of Solar Flares Using a Causal Wavelet-Energy Feature**.
 
 The reference configuration is evaluated on January-December 2022 and then frozen and applied without parameter retuning to January-December 2023.
@@ -71,9 +73,9 @@ See [docs/RUN_ORDER.md](docs/RUN_ORDER.md) for details.
 
 ## Data availability
 
-Large GOES NetCDF inputs are public NOAA/NCEI files and are intentionally not duplicated in Git. `code/prepare_goes_inputs.py` downloads the 2023 NOAA input and the checksum-pinned original 2022 ZIP from the [dataset release](https://github.com/ArpitaTasnim/solar-flare-causal-wavelet/releases/tag/data-v1.0). Exact reproduction is pending validation.
+Large GOES NetCDF inputs are public NOAA/NCEI files and are intentionally not duplicated in Git. `code/prepare_goes_inputs.py` downloads the checksum-pinned original 2022 ZIP, 2023 NetCDF, and 2023 flare-reference CSV from the [dataset release](https://github.com/ArpitaTasnim/solar-flare-causal-wavelet/releases/tag/data-v1.0). The [successful automated run](https://github.com/ArpitaTasnim/solar-flare-causal-wavelet/actions/runs/45686421097) regenerated the 2022 analysis and 2023 alerts, passed the expected paper totals and final reproducibility checker, and committed the rebuilt artifacts.
 
-The compact paper-result tables and 2022 monthly metrics are committed. The NOAA reference catalogs, coverage summaries, and full 2023 alert-event files are generated or downloaded by the reproducibility commands so reviewers do not depend on copied spreadsheet previews.
+The compact paper-result tables and 2022 monthly metrics are committed. The NOAA reference catalogs, coverage summaries, and full 2023 alert-event files are committed and can be regenerated or downloaded by the reproducibility commands so reviewers do not depend on copied spreadsheet previews.
 
 ## Reproducibility notes
 
