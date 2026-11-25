@@ -1,0 +1,72 @@
+name: rebuild-reproducibility-artifacts
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/rebuild-reproducibility-artifacts.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Prepare official GOES inputs
+        run: python code/prepare_goes_inputs.py
+
+      - name: Build 2022 reference catalog
+        run: python code/prepare_2022_reference.py
+
+      - name: Generate frozen 2023 alerts
+        run: python code/run_2023_alerts.py
+
+      - name: Verify 2023 metrics
+        run: python code/verify_2023_metrics.py
+
+      - name: Validate expected counts
+        run: |
+          python - <<'PY'
+          import pandas as pd
+          from pathlib import Path
+
+          ref = pd.read_csv("results/2023/out_of_sample/wavelet_alerts_2023_Reference_T6.csv")
+          mit = pd.read_csv("results/2023/out_of_sample/wavelet_alerts_2023_Mitigation_T12.csv")
+          cat22 = pd.read_csv("data/reference/2022/NOAA_CMX_reference_2022.csv")
+          cat23 = pd.read_csv("data/reference/2023/sci_xrsf-l2-flrpt_geo_y2023_v1-0-1.csv")
+
+          assert len(ref) == 4430, len(ref)
+          assert (ref["stream"] == "prediction").sum() == 3092
+          assert (ref["stream"] == "detection").sum() == 1338
+          assert len(mit) == 3998, len(mit)
+          assert (mit["stream"] == "prediction").sum() == 2896
+          assert (mit["stream"] == "detection").sum() == 1102
+          assert len(cat22) == 2308, len(cat22)
+
+          cmx = cat23["flare_class"].astype(str).str[0].isin(["C","M","X"])
+          assert int(cmx.sum()) == 3284, int(cmx.sum())
+
+          print("Validated clean artifact counts.")
+          PY
+
+      - name: Commit clean reproducibility artifacts
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f             data/reference/2022/NOAA_CMX_reference_2022.csv             data/reference/2023/sci_xrsf-l2-flrpt_geo_y2023_v1-0-1.csv             data/coverage/GOES_2022_full_year_coverage_summary.csv             data/coverage/GOES_2023_coverage_summary.csv             results/2023/out_of_sample/wavelet_alerts_2023_Reference_T6.csv             results/2023/out_of_sample/wavelet_alerts_2023_Mitigation_T12.csv
+          git diff --cached --quiet && exit 0
+          git commit -m "Rebuild clean reproducibility artifacts"
+          git push
