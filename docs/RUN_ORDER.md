@@ -90,3 +90,14 @@ The 2023 alert-generation parameters are frozen, but the **scoring catalog is no
 ## 8. Causal timing details
 
 The 4-min persistence setting means the feature must remain above threshold over a 4-min elapsed span at the 2-min decision cadence. In the implementation this corresponds to above-threshold decisions at the crossing time, +2 min, and +4 min. Matching and lead time use the confirmed alert `start_time` (the +4-min confirmation time); `crossing_start_time` is retained separately in the alert CSVs.
+
+
+## 9. Final integrity check
+
+After the data preparation and analysis steps, run:
+
+```bash
+python code/check_reproducibility.py
+```
+
+This checks for spreadsheet-preview corruption, confirms the 2022/2023 catalog counts, and verifies the expected 2023 alert totals before the repository is shared.
