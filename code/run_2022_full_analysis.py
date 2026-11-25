@@ -38,6 +38,7 @@ from __future__ import annotations
 from collections import deque
 from dataclasses import dataclass
 from pathlib import Path
+import argparse
 import calendar
 import hashlib
 import re
@@ -56,20 +57,18 @@ except Exception:
 
 
 # ============================================================
-# USER SETTINGS
+# PATHS / USER SETTINGS
 # ============================================================
 
-GOES_ZIP = None
-# Example:
-# GOES_ZIP = r"C:\Users\HP\Downloads\GOES_2022_FULL.zip"
-
-OUTPUT_FOLDER = str(Path.home() / "Downloads" / "SolarFlare_2022_FullYear")
+REPO_ROOT = Path(__file__).resolve().parents[1]
+GOES_ZIP = REPO_ROOT / "data" / "raw" / "2022" / "GOES_2022_FULL.zip"
+OUTPUT_FOLDER = REPO_ROOT / "results" / "2022" / "generated"
+REFERENCE_OUTPUT = REPO_ROOT / "data" / "reference" / "2022" / "NOAA_CMX_reference_2022.csv"
 
 YEAR = 2022
 
 # Fixed slope threshold selected on April in the earlier baseline analysis.
 SLOPE_THRESHOLD_DEX_PER_MIN = 0.0035452873815516642
-
 
 # ============================================================
 # CONFIGURATION
@@ -114,32 +113,14 @@ MATCH_COLUMNS = [
 # PATHS
 # ============================================================
 
-def locate_goes_zip() -> Path:
-    if GOES_ZIP:
-        p = Path(GOES_ZIP).expanduser().resolve()
-        if not p.exists():
-            raise FileNotFoundError(f"GOES_ZIP not found: {p}")
-        return p
-
-    candidates = []
-    for folder in [Path.cwd(), Path.home() / "Downloads", Path.home() / "Download"]:
-        if folder.exists():
-            candidates.extend(folder.glob("GOES_2022_FULL*.zip"))
-
-    candidates = sorted(
-        set(candidates),
-        key=lambda p: p.stat().st_mtime,
-        reverse=True,
-    )
-
-    if not candidates:
+def locate_goes_zip(path: Path | None = None) -> Path:
+    p = Path(path if path is not None else GOES_ZIP).expanduser().resolve()
+    if not p.exists():
         raise FileNotFoundError(
-            "Could not find GOES_2022_FULL.zip automatically. "
-            "Set GOES_ZIP at the top of this script."
+            f"GOES input not found: {p}\n"
+            "Run: python code/prepare_goes_inputs.py"
         )
-
-    print("Auto-found GOES ZIP:", candidates[0])
-    return candidates[0]
+    return p
 
 
 # ============================================================
@@ -1265,30 +1246,31 @@ def evaluate_full_year(goes, catalog, output_dir):
 # ============================================================
 
 def main():
-    global GOES_ZIP, OUTPUT_FOLDER
-
     ap = argparse.ArgumentParser()
     ap.add_argument(
         "--goes-zip",
         type=Path,
-        default=Path(GOES_ZIP),
+        default=GOES_ZIP,
         help="Prepared GOES_2022_FULL.zip input.",
     )
     ap.add_argument(
         "--output-dir",
         type=Path,
-        default=Path(OUTPUT_FOLDER),
+        default=OUTPUT_FOLDER,
         help="Directory for regenerated 2022 results.",
     )
+    ap.add_argument(
+        "--reference-output",
+        type=Path,
+        default=REFERENCE_OUTPUT,
+        help="Path for the parsed 2022 C/M/X reference catalog.",
+    )
     args = ap.parse_args()
-
-    GOES_ZIP = str(args.goes_zip)
-    OUTPUT_FOLDER = str(args.output_dir)
 
     output = args.output_dir.expanduser().resolve()
     output.mkdir(parents=True, exist_ok=True)
 
-    goes_zip = locate_goes_zip()
+    goes_zip = locate_goes_zip(args.goes_zip)
 
     print("\n1/4 Reading full-year GOES data...")
     goes = read_goes_full_year(goes_zip)
@@ -1315,6 +1297,12 @@ def main():
         catalog["class_letter"].isin(["C", "M", "X"])
     ].copy()
 
+    args.reference_output.parent.mkdir(parents=True, exist_ok=True)
+    cmx.to_csv(
+        args.reference_output,
+        index=False,
+        date_format="%Y-%m-%dT%H:%M:%SZ",
+    )
     cmx.to_csv(
         output / "NOAA_CMX_reference_2022.csv",
         index=False,
