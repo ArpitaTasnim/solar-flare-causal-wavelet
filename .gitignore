@@ -1,0 +1,6 @@
+data/raw/
+results/2022/generated/
+results/2022/generated_ablation/
+results/2023/recomputed_verification/
+__pycache__/
+*.pyc
