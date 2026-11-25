@@ -31,6 +31,26 @@ jobs:
       - name: Build 2022 reference catalog
         run: python code/prepare_2022_reference.py
 
+      - name: Re-run 2022 full-year analysis
+        run: python code/run_2022_full_analysis.py
+
+      - name: Validate 2022 paper totals
+        run: |
+          python - <<'PY'
+          import pandas as pd
+
+          p = pd.read_csv("results/2022/generated/pooled_metrics_2022.csv")
+          r = p.loc[
+              (p["method"] == "Wavelet Prediction")
+              & (p["period"] == "Jan-Dec 2022")
+          ].iloc[0]
+
+          assert int(r["TP"]) == 912, r.to_dict()
+          assert int(r["FP"]) == 2205, r.to_dict()
+          assert int(r["FN"]) == 1393, r.to_dict()
+          print("Validated 2022 Wavelet Prediction: TP=912, FP=2205, FN=1393")
+          PY
+
       - name: Generate frozen 2023 alerts
         run: python code/run_2023_alerts.py
 
