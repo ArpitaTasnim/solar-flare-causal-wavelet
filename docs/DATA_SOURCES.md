@@ -10,8 +10,8 @@ https://data.ngdc.noaa.gov/platforms/solar-space-observing-satellites/goes/goes1
 
 Files used by the reproducibility workflow:
 
-- 2022: `sci_xrsf-l2-avg1m_g16_y2022_v2-2-1.nc`
-- 2023: `sci_xrsf-l2-avg1m_g16_y2023_v2-2-1.nc`
+- 2022: `sci_xrsf-l2-avg1m_g16_y2022_v2-2-2.nc`
+- 2023: `sci_xrsf-l2-avg1m_g16_y2023_v2-2-2.nc`
 
 The original 2022 working archive `GOES_2022_FULL.zip` was a flattened CSV representation. The analysis only reads `time`, `quad_diode`, `xrsb_flux`, and `xrsb_flag`, then retains `quad_diode == 0`. `code/prepare_goes_inputs.py` downloads the official NetCDF and creates an analysis-equivalent compact `GOES_2022_FULL.zip`.
 
