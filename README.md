@@ -77,7 +77,8 @@ The compact paper-result tables and 2022 monthly metrics are committed. The NOAA
 
 ## Reproducibility notes
 
-- `code/prepare_2022_reference.py` downloads/parses the 2022 NOAA/SWPC C/M/X reference catalog.\n- `code/run_2022_full_analysis.py` reproduces the full 2022 wavelet and baseline analysis.
+- `code/prepare_2022_reference.py` downloads/parses the 2022 NOAA/SWPC C/M/X reference catalog.
+- `code/run_2022_full_analysis.py` reproduces the full 2022 wavelet and baseline analysis.
 - `code/run_2022_ablation.py` reproduces the one-factor-at-a-time wavelet sensitivity table.
 - `code/run_2023_alerts.py` regenerates the frozen T=6 h and pre-defined T=12 h 2023 alert files from the raw GOES-16 NetCDF without using flare labels.
 - `code/verify_2023_metrics.py` scores those alerts against the committed 2023 flare report.
