@@ -18,3 +18,8 @@ data/
 ```
 
 The raw files are preserved in the complete local reproducibility package. See `docs/DATA_SOURCES.md` for provenance and evaluation rules.
+
+
+## Coverage summaries
+
+The `data/coverage/` directory contains compact coverage summaries for the GOES datasets used in the study.
