@@ -12,7 +12,7 @@ import argparse
 import numpy as np
 import pandas as pd
 
-WARMUP_MIN = 120
+REPO_ROOT = Path(__file__).resolve().parents[1]\n\nWARMUP_MIN = 120
 PRED_MIN_LEAD = 10
 PRED_MAX_LEAD = 90
 DET_TOL = 10
@@ -125,13 +125,13 @@ def evaluate(alert_file: Path, refs: pd.DataFrame, setting: str):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--data-dir", type=Path, default=Path("../03_data/raw/2023"))
-    ap.add_argument("--alerts-dir", type=Path, default=Path("../04_results/2023_out_of_sample"))
-    ap.add_argument("--out-dir", type=Path, default=Path("../04_results/2023_recomputed"))
+    ap.add_argument("--catalog", type=Path, default=REPO_ROOT / "data" / "reference" / "2023" / "sci_xrsf-l2-flrpt_geo_y2023_v1-0-1.csv")
+    ap.add_argument("--alerts-dir", type=Path, default=REPO_ROOT / "results" / "2023" / "out_of_sample")
+    ap.add_argument("--out-dir", type=Path, default=REPO_ROOT / "results" / "2023" / "recomputed_verification")
     args = ap.parse_args()
     args.out_dir.mkdir(parents=True, exist_ok=True)
 
-    refs = load_refs(args.data_dir / "sci_xrsf-l2-flrpt_geo_y2023_v1-0-1.csv")
+    refs = load_refs(args.catalog)
     specs = [
         ("Reference_T6", args.alerts_dir / "wavelet_alerts_2023_Reference_T6.csv"),
         ("Mitigation_T12", args.alerts_dir / "wavelet_alerts_2023_Mitigation_T12.csv"),
