@@ -25,8 +25,8 @@ FLRPT_BASE = (
     "goes/multi/l2/data/xrsf-l2-flrpt_science/csv"
 )
 
-URL_2022 = AVG1M_BASE + "/sci_xrsf-l2-avg1m_g16_y2022_v2-2-1.nc"
-URL_2023 = AVG1M_BASE + "/sci_xrsf-l2-avg1m_g16_y2023_v2-2-1.nc"
+URL_2022 = AVG1M_BASE + "/sci_xrsf-l2-avg1m_g16_y2022_v2-2-2.nc"
+URL_2023 = AVG1M_BASE + "/sci_xrsf-l2-avg1m_g16_y2023_v2-2-2.nc"
 URL_2023_FLRPT = FLRPT_BASE + "/sci_xrsf-l2-flrpt_geo_y2023_v1-0-1.csv"
 
 
@@ -129,11 +129,11 @@ def main():
     )
     args = ap.parse_args()
 
-    nc2023 = RAW_2023 / "sci_xrsf-l2-avg1m_g16_y2023_v2-2-1.nc"
+    nc2023 = RAW_2023 / "sci_xrsf-l2-avg1m_g16_y2023_v2-2-2.nc"
     flare2023 = REF_2023 / "sci_xrsf-l2-flrpt_geo_y2023_v1-0-1.csv"
 
     if not args.only_2023:
-        nc2022 = RAW_2022 / "sci_xrsf-l2-avg1m_g16_y2022_v2-2-1.nc"
+        nc2022 = RAW_2022 / "sci_xrsf-l2-avg1m_g16_y2022_v2-2-2.nc"
         zip2022 = RAW_2022 / "GOES_2022_FULL.zip"
         download(URL_2022, nc2022)
         build_2022_zip(nc2022, zip2022)
