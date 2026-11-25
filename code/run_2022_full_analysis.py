@@ -1265,7 +1265,27 @@ def evaluate_full_year(goes, catalog, output_dir):
 # ============================================================
 
 def main():
-    output = Path(OUTPUT_FOLDER).expanduser().resolve()
+    global GOES_ZIP, OUTPUT_FOLDER
+
+    ap = argparse.ArgumentParser()
+    ap.add_argument(
+        "--goes-zip",
+        type=Path,
+        default=Path(GOES_ZIP),
+        help="Prepared GOES_2022_FULL.zip input.",
+    )
+    ap.add_argument(
+        "--output-dir",
+        type=Path,
+        default=Path(OUTPUT_FOLDER),
+        help="Directory for regenerated 2022 results.",
+    )
+    args = ap.parse_args()
+
+    GOES_ZIP = str(args.goes_zip)
+    OUTPUT_FOLDER = str(args.output_dir)
+
+    output = args.output_dir.expanduser().resolve()
     output.mkdir(parents=True, exist_ok=True)
 
     goes_zip = locate_goes_zip()
