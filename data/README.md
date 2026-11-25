@@ -28,4 +28,4 @@ Prepare the large GOES inputs with:
 python code/prepare_goes_inputs.py
 ```
 
-The reference catalogs and coverage summaries are committed to the repository. See `docs/DATA_SOURCES.md` for provenance and the important 2022-vs-2023 catalog comparability note.
+The reference catalogs and coverage summaries are created by the preparation/analysis scripts from the official NOAA sources. See `docs/DATA_SOURCES.md` for provenance and the important 2022-vs-2023 catalog comparability note.
