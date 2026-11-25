@@ -73,11 +73,11 @@ See [docs/RUN_ORDER.md](docs/RUN_ORDER.md) for details.
 
 Large GOES NetCDF inputs are public NOAA/NCEI files and are intentionally not duplicated in Git. `code/prepare_goes_inputs.py` downloads them from the official archive and builds the compact 2022 ZIP expected by the preserved analysis code.
 
-The small flare-reference catalogs, 2022 monthly metrics, 2022/2023 coverage summaries, and 2023 alert-event files needed to audit the reported scoring are committed directly in this repository.
+The compact paper-result tables and 2022 monthly metrics are committed. The NOAA reference catalogs, coverage summaries, and full 2023 alert-event files are generated or downloaded by the reproducibility commands so reviewers do not depend on copied spreadsheet previews.
 
 ## Reproducibility notes
 
-- `code/run_2022_full_analysis.py` reproduces the full 2022 wavelet and baseline analysis.
+- `code/prepare_2022_reference.py` downloads/parses the 2022 NOAA/SWPC C/M/X reference catalog.\n- `code/run_2022_full_analysis.py` reproduces the full 2022 wavelet and baseline analysis.
 - `code/run_2022_ablation.py` reproduces the one-factor-at-a-time wavelet sensitivity table.
 - `code/run_2023_alerts.py` regenerates the frozen T=6 h and pre-defined T=12 h 2023 alert files from the raw GOES-16 NetCDF without using flare labels.
 - `code/verify_2023_metrics.py` scores those alerts against the committed 2023 flare report.
