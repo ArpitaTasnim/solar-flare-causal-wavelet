@@ -2,7 +2,7 @@
 
 ## GOES XRS flux input
 
-Both years use the GOES-16 XRS Level-2 **1-minute average science product** and the 1–8 Å (`xrsb_flux`) channel.
+Both years are based on the GOES-16 XRS Level-2 **1-minute average science product** and the 1–8 Å (`xrsb_flux`) channel. The 2022 analysis reads the authors' preserved flattened CSV archive; the 2023 analysis reads the original NetCDF directly.
 
 Official NOAA/NCEI directory:
 
@@ -13,7 +13,7 @@ Files used by the reproducibility workflow:
 - 2022: original `GOES_2022_FULL.zip`, preserved as a [release asset](https://github.com/ArpitaTasnim/solar-flare-causal-wavelet/releases/tag/data-v1.0). SHA-256: `67b63eae17245227ccc51b77612c496384b76fda4954eede9c89abb1bf62242e`.
 - 2023: original `sci_xrsf-l2-avg1m_g16_y2023_v2-2-1.nc`, preserved in the same release. SHA-256: `c25cde23fe3ecb1b6185ec823126cd0d68893461216d3f2ca687e1c08034af31`.
 
-The original 2022 working archive `GOES_2022_FULL.zip` was a flattened CSV representation. The analysis only reads `time`, `quad_diode`, `xrsb_flux`, and `xrsb_flag`, then retains `quad_diode == 0`. `code/prepare_goes_inputs.py` downloads and checksum-verifies the original archive instead of recreating it from a revised NOAA product. The original inputs passed the automated reproducibility validation in [run 45686421097](https://github.com/ArpitaTasnim/solar-flare-causal-wavelet/actions/runs/45686421097).
+The original 2022 working archive `GOES_2022_FULL.zip` was a flattened CSV representation of `sci_xrsf-l2-avg1m_g16_y2022_v2-2-0.nc`, as recorded in the authors' original data-preparation history. The source NetCDF itself is not archived here; the checksum-pinned ZIP is the exact analysis input. The analysis only reads `time`, `quad_diode`, `xrsb_flux`, and `xrsb_flag`, then retains `quad_diode == 0`. `code/prepare_goes_inputs.py` downloads and checksum-verifies the original archive instead of recreating it from a revised NOAA product. The original inputs passed the automated reproducibility validation in [run 45686421097](https://github.com/ArpitaTasnim/solar-flare-causal-wavelet/actions/runs/45686421097).
 
 ## 2022 flare-reference catalog
 
@@ -55,6 +55,8 @@ Reference flare labels are used only for scoring/matching. They are not used to 
 The causal wavelet implementation treats non-finite and negative `xrsb_flux` samples as unavailable. Gaps of at most 2 min are filled only when the required bracketing observation has arrived; longer gaps remain unavailable.
 
 The committed 2022 runner reads `xrsb_flag` from the flattened input but does not use the quality flag as an additional exclusion rule. The 2023 raw-to-alert generator likewise uses the flux values and treats invalid/negative flux as unavailable.
+
+The regenerated 2023 coverage summary uses the NetCDF metadata's `_FillValue` to convert missing flux samples to NaN before counting. Of 525,600 minutes, 523,971 have finite flux and 1,629 are non-finite (missing), with `negative_flux = 0`. The earlier coverage summary counted the invalid fill values as negative flux instead. The regenerated summary is the correct missing-data accounting; both conventions mark these samples as unavailable to the analysis.
 
 The forecasting baselines operate on the raw flux series and do not use the wavelet pipeline's short-gap interpolation.
 
