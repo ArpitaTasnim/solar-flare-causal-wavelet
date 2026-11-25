@@ -1,8 +1,8 @@
-# Data layout
+# GOES datasets and reference catalogs
 
 Large original NOAA/NCEI GOES scientific inputs are preserved as checksum-pinned assets in the [data-v1.0 release](https://github.com/ArpitaTasnim/solar-flare-causal-wavelet/releases/tag/data-v1.0) rather than committed to Git.
 
-Expected local layout:
+Local data layout:
 
 ```text
 data/
