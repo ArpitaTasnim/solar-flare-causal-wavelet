@@ -11,7 +11,9 @@ import argparse
 import numpy as np
 import pandas as pd
 
-REPO_ROOT = Path(__file__).resolve().parents[1]\n\nWARMUP_MIN = 120
+REPO_ROOT = Path(__file__).resolve().parents[1]
+
+WARMUP_MIN = 120
 PRED_MIN_LEAD = 10
 PRED_MAX_LEAD = 90
 DET_TOL = 10
